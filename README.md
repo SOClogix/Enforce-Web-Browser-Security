@@ -128,18 +128,18 @@ Chrome provides enterprise policies to disable autofill of **payment methods** a
 These settings do **not** affect the "Sign in automatically" option and are independent of `PasswordManagerEnabled`.
 
 ### Microsoft Edge (Chromium) – Payment Methods & Addresses
-Edge supports granular administrative control over autofill:
+Edge provides enterprise policies to disable autofill of **payment methods** and **addresses**, but these are separate from the password manager:
 - `AutofillCreditCardEnabled = 0` disables saving and autofilling payment cards.
 - `AutofillAddressEnabled = 0` disables saving and autofilling addresses.
 
-These are separate from Edge’s password-related controls (`PasswordManagerEnabled` and `PrimaryPasswordSetting`). Edge is the most complete browser in terms of enterprise autofill management.
+These are separate from Edge’s password-related controls (`PasswordManagerEnabled` and `PrimaryPasswordSetting`).
 
 ### Mozilla Firefox – Payment Methods & Addresses
-Firefox does **not** provide enterprise policies for disabling payment-method autofill.  
-However, address autofill can be controlled via:
-- `AddressAutofillEnabled = 0` (when supported by the deployed Firefox version)
+Firefox provides enterprise policies to disable autofill of **payment methods** and **addresses**, but these are separate from the password manager:
+- `AddressAutofillEnabled = 0` disables saving and autofilling payment cards.
+- `AutofillAddressEnabled = 0` disables saving and autofilling addresses.
 
-Firefox may still allow limited form autofill behaviors depending on version, add-ons, or user-level settings. Disabling the password manager **does not** disable address or payment-method autofill by default, as these are separate systems in Firefox.
+These settings are independent of `PasswordManagerEnabled`.
 
 ## Disable Saving Payment Methods & Addresses via PowerShell
 
@@ -159,5 +159,14 @@ $base = 'HKLM:\SOFTWARE\Policies\Microsoft\Edge'
 New-Item -Path $base -Force | Out-Null
 New-ItemProperty -Path $base -Name 'AutofillCreditCardEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
 # Disable Edge address autofill
+New-ItemProperty -Path $base -Name 'AutofillAddressEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
+```
+### Mozilla Firefox
+```
+# Disable Firefox payment method autofill (credit cards)
+$base = 'HKLM:\SOFTWARE\Policies\Mozilla\Firefox'
+New-Item -Path $base -Force | Out-Null
+New-ItemProperty -Path $base -Name 'AutofillCreditCardEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
+# Disable Chrome address autofill
 New-ItemProperty -Path $base -Name 'AutofillAddressEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
 ```
