@@ -170,3 +170,82 @@ New-ItemProperty -Path $base -Name 'AutofillCreditCardEnabled' -PropertyType DWo
 # Disable Chrome address autofill
 New-ItemProperty -Path $base -Name 'AutofillAddressEnabled' -PropertyType DWord -Value 0 -Force | Out-Null
 ```
+## Disable Saving Payment Methods & Addresses via GPO
+
+### Steps to Configure Group Policy (GPO)
+
+1. Open **Group Policy Management** (`gpmc.msc`).
+2. Right-click the target OU or the domain root and select:  
+   **Create a GPO in this domain, and Link it here…**  
+   Name it: **Enforce – Disable Autofill for Payment Methods & Addresses**
+3. Right-click the GPO and choose **Edit…**
+4. Navigate to:  
+   **Computer Configuration** → **Preferences** → **Windows Settings** → **Registry**
+5. Right-click **Registry** → **New** → **Registry Item**  
+   Then create the following registry entries for each browser.
+
+---
+
+### Google Chrome – Disable Saving Payment Methods
+- **Action:** Update  
+- **Hive:** `HKEY_LOCAL_MACHINE`  
+- **Key Path:** `SOFTWARE\Policies\Google\Chrome`  
+- **Value name:** `AutofillCreditCardEnabled`  
+- **Value type:** `REG_DWORD`  
+- **Value data:** `0`
+
+### Google Chrome – Disable Saving Addresses
+- **Action:** Update  
+- **Hive:** `HKEY_LOCAL_MACHINE`  
+- **Key Path:** `SOFTWARE\Policies\Google\Chrome`  
+- **Value name:** `AutofillAddressEnabled`  
+- **Value type:** `REG_DWORD`  
+- **Value data:** `0`
+
+---
+
+### Microsoft Edge (Chromium) – Disable Saving Payment Methods
+- **Action:** Update  
+- **Hive:** `HKEY_LOCAL_MACHINE`  
+- **Key Path:** `SOFTWARE\Policies\Microsoft\Edge`  
+- **Value name:** `AutofillCreditCardEnabled`  
+- **Value type:** `REG_DWORD`  
+- **Value data:** `0`
+
+### Microsoft Edge (Chromium) – Disable Saving Addresses
+- **Action:** Update  
+- **Hive:** `HKEY_LOCAL_MACHINE`  
+- **Key Path:** `SOFTWARE\Policies\Microsoft\Edge`  
+- **Value name:** `AutofillAddressEnabled`  
+- **Value type:** `REG_DWORD`  
+- **Value data:** `0`
+
+---
+
+### Mozilla Firefox – Disable Saving Payment Methods  
+- **Action:** Update  
+- **Hive:** `HKEY_LOCAL_MACHINE`  
+- **Key Path:** `SOFTWARE\Policies\Mozilla\Firefox`  
+- **Value name:** `AutofillCreditCardEnabled`  
+- **Value type:** `REG_DWORD`  
+- **Value data:** `0`
+
+### Mozilla Firefox – Disable Address Autofill
+- **Action:** Update  
+- **Hive:** `HKEY_LOCAL_MACHINE`  
+- **Key Path:** `SOFTWARE\Policies\Mozilla\Firefox`  
+- **Value name:** `AddressAutofillEnabled`  
+- **Value type:** `REG_DWORD`  
+- **Value data:** `0`
+
+---
+
+### Verification  
+1. Run `gpupdate /force` on a client system or wait for automatic refresh.  
+2. Verify the registry paths exist under:
+   - `HKLM\SOFTWARE\Policies\Google\Chrome`
+   - `HKLM\SOFTWARE\Policies\Microsoft\Edge`
+   - `HKLM\SOFTWARE\Policies\Mozilla\Firefox`
+3. Launch each browser and confirm:
+   - Autofill of payment methods is disabled.
+   - Autofill of addresses is disabled.  
