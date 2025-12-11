@@ -4,8 +4,6 @@
 #### Opera Browser Management (Opera, Opera GX, and Opera Air)
 This will come at a later date when more time for research and testing is allocated.
 Opera does not provide documented Windows enterprise policy / ADMX support for disabling its password manager via registry or a central machine-wide policy, unlike Chrome/Edge/Firefox. Microsoft’s own guidance for Intune/SCCM notes that there’s currently no device configuration support for Opera browser management.
-#### Firefox Browser Management
-
 
 ## Disable Browser Password Managers - Introduction
 
